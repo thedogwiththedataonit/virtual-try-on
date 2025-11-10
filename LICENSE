@@ -1,0 +1,91 @@
+MIT License
+
+Copyright (c) 2025 Virtual Try-On Catalog Generator
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+THIRD-PARTY NOTICES
+
+This project uses the following third-party services and libraries:
+
+1. FAL AI (Nanobanana)
+   - Service: AI image generation and editing
+   - Terms: https://fal.ai/terms
+   - Privacy: https://fal.ai/privacy
+
+2. Upstash Redis
+   - Service: Serverless Redis database
+   - Terms: https://upstash.com/terms
+   - Privacy: https://upstash.com/privacy
+
+3. Next.js
+   - License: MIT
+   - URL: https://github.com/vercel/next.js
+
+4. React
+   - License: MIT
+   - URL: https://github.com/facebook/react
+
+5. Tailwind CSS
+   - License: MIT
+   - URL: https://github.com/tailwindlabs/tailwindcss
+
+6. Shadcn UI
+   - License: MIT
+   - URL: https://github.com/shadcn-ui/ui
+
+7. Radix UI
+   - License: MIT
+   - URL: https://github.com/radix-ui/primitives
+
+For a complete list of dependencies and their licenses, see package.json.
+
+---
+
+DISCLAIMER
+
+This software is designed for ecommerce product catalog generation. Users are
+responsible for:
+
+- Obtaining proper model releases and rights
+- Complying with local laws regarding AI-generated content
+- Ensuring accurate product representation
+- Following advertising standards and regulations
+- Respecting intellectual property rights
+
+The authors and contributors are not liable for any misuse of this software
+or any claims arising from generated content.
+
+---
+
+USAGE TERMS
+
+Commercial Use: Permitted
+Modification: Permitted
+Distribution: Permitted
+Private Use: Permitted
+
+Attribution: Not required but appreciated
+
+---
+
+For questions about licensing, please open an issue on GitHub.
+
