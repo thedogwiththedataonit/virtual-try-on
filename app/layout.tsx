@@ -16,9 +16,9 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "v0 | Nano Banana Starter",
-  description: "Created with v0",
-  generator: "v0.app",
+  title: "Ecommerce Virtual Try-On",
+  description: "Create stunning virtual try-on photos",
+  generator: "Ecommerce Virtual Try-On",
 }
 
 export default function RootLayout({
