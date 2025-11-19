@@ -61,7 +61,7 @@ export function ImageCombiner() {
 
   const [showAnimation, setShowAnimation] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
-  const [prompt, setPrompt] = useState("Model wearing the product naturally, professional ecommerce photography")
+  const [prompt, setPrompt] = useState("Model wearing the product naturally, professional ecommerce photography. Depending on the article of clothing, the model should be wearing it in a natural way, not forced.")
   const [isDragOver, setIsDragOver] = useState(false)
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null)
   const [showFullscreen, setShowFullscreen] = useState(false)
@@ -879,6 +879,57 @@ export function ImageCombiner() {
     showToast("All images cleared", "success")
   }
 
+  const loadImageFromUrl = async (url: string, filename: string): Promise<File | null> => {
+    try {
+      const response = await fetch(url)
+      if (!response.ok) throw new Error('Failed to fetch image')
+      const blob = await response.blob()
+      const file = new File([blob], filename, { type: blob.type })
+      return file
+    } catch (error) {
+      console.error(`Error loading image from ${url}:`, error)
+      return null
+    }
+  }
+
+  const loadDemoImages = async () => {
+    showToast("Loading demo images...", "success")
+    
+    // Clear existing images first
+    setModelImages([])
+    setModelPreviews([])
+    setProductImages([])
+    setProductPreviews([])
+    
+    // Load model image
+    const modelUrl = '/model1.jpg'
+    const modelFile = await loadImageFromUrl(modelUrl, 'model1.jpg')
+    if (modelFile) {
+      await handleImageUpload(modelFile, "model")
+    }
+    
+    // Load outfit images
+    const outfitUrls = [
+      '/cream-dress.webp',
+      '/pants.webp',
+      '/pants2.webp',
+      '/outfit.webp',
+      '/dress.webp'
+    ]
+    
+    for (const url of outfitUrls) {
+      const filename = url.substring(1) // Remove leading slash
+      const file = await loadImageFromUrl(url, filename)
+      if (file) {
+        await handleImageUpload(file, "product")
+      }
+      // Small delay between uploads
+      await new Promise(resolve => setTimeout(resolve, 200))
+    }
+    
+    showToast("Demo images loaded!", "success")
+  }
+
   const canGenerate = prompt.trim().length > 0 && modelImages.length > 0 && productImages.length > 0
 
   const handleGlobalDragEnter = (e: React.DragEvent) => {
@@ -1069,6 +1120,14 @@ export function ImageCombiner() {
                 </div>
 
               <div className="flex items-center gap-2">
+                <Button
+                  onClick={loadDemoImages}
+                  variant="outline"
+                  size="sm"
+                  className="h-8 px-3 text-xs bg-transparent border-gray-600 text-white hover:bg-gray-700"
+                >
+                  Load Demo
+                </Button>
                 {(modelImages.length > 0 || productImages.length > 0) && (
                     <Button
                     onClick={clearAllImages}
