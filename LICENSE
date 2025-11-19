@@ -31,28 +31,23 @@ This project uses the following third-party services and libraries:
    - Terms: https://fal.ai/terms
    - Privacy: https://fal.ai/privacy
 
-2. Upstash Redis
-   - Service: Serverless Redis database
-   - Terms: https://upstash.com/terms
-   - Privacy: https://upstash.com/privacy
-
-3. Next.js
+2. Next.js
    - License: MIT
    - URL: https://github.com/vercel/next.js
 
-4. React
+3. React
    - License: MIT
    - URL: https://github.com/facebook/react
 
-5. Tailwind CSS
+4. Tailwind CSS
    - License: MIT
    - URL: https://github.com/tailwindlabs/tailwindcss
 
-6. Shadcn UI
+5. Shadcn UI
    - License: MIT
    - URL: https://github.com/shadcn-ui/ui
 
-7. Radix UI
+6. Radix UI
    - License: MIT
    - URL: https://github.com/radix-ui/primitives
 

@@ -1,98 +1,14 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { fal } from "@fal-ai/client"
-import { Redis } from "@upstash/redis"
 
 // Configure fal with API key
 fal.config({
   credentials: process.env.FAL_KEY,
 })
 
-const redis = new Redis({
-  url: process.env.KV_REST_API_URL!,
-  token: process.env.KV_REST_API_TOKEN!,
-})
-
-// Rate limiting: 2 requests per day per IP
-const MAX_REQUESTS_PER_DAY = 2
-
-async function checkRateLimit(ip: string): Promise<{ allowed: boolean; remaining: number; resetTime: number }> {
-  const now = Date.now()
-  const today = new Date().toISOString().split("T")[0] // YYYY-MM-DD format
-  const key = `ratelimit:${ip}:${today}`
-
-  // Get end of day timestamp for expiration
-  const endOfDay = new Date()
-  endOfDay.setHours(23, 59, 59, 999)
-  const resetTime = endOfDay.getTime()
-  const ttlSeconds = Math.floor((resetTime - now) / 1000)
-
-  try {
-    // Get current count from Redis
-    const count = await redis.get<number>(key)
-
-    if (count === null) {
-      // First request of the day
-      await redis.set(key, 1, { ex: ttlSeconds })
-      return { allowed: true, remaining: MAX_REQUESTS_PER_DAY - 1, resetTime }
-    }
-
-    // Check if limit exceeded
-    if (count >= MAX_REQUESTS_PER_DAY) {
-      return { allowed: false, remaining: 0, resetTime }
-    }
-
-    // Increment count
-    await redis.incr(key)
-    return { allowed: true, remaining: MAX_REQUESTS_PER_DAY - count - 1, resetTime }
-  } catch (error) {
-    console.error("[v0] API: Redis error:", error)
-    // Fallback: allow request if Redis fails
-    return { allowed: true, remaining: MAX_REQUESTS_PER_DAY, resetTime }
-  }
-}
-
 export async function POST(request: NextRequest) {
   try {
-    const ip = request.headers.get("x-forwarded-for")?.split(",")[0] || request.headers.get("x-real-ip") || "unknown"
-    console.log("[v0] API: Request from IP:", ip)
-
-    const referer = request.headers.get("referer") || ""
-    const isDev = process.env.NODE_ENV === "development" || referer.includes("v0.dev") || referer.includes("localhost")
-    const bypassRateLimit = referer.includes("/g") || isDev
-    console.log("[v0] API: Referer:", referer)
-    console.log("[v0] API: Is Dev Mode:", isDev)
-    console.log("[v0] API: Bypass rate limit:", bypassRateLimit)
-
-    // Only apply rate limiting if not accessing via /g or dev mode
-    if (!bypassRateLimit) {
-      const rateLimit = await checkRateLimit(ip)
-      console.log("[v0] API: Rate limit check:", rateLimit)
-
-      if (!rateLimit.allowed) {
-        const resetDate = new Date(rateLimit.resetTime)
-        console.log("[v0] API: Rate limit exceeded for IP:", ip)
-        return NextResponse.json(
-          {
-            error: "Rate limit exceeded",
-            message: `You have reached the maximum of ${MAX_REQUESTS_PER_DAY} generations per day. Please try again after ${resetDate.toLocaleTimeString()}.`,
-            resetTime: rateLimit.resetTime,
-          },
-          {
-            status: 429,
-            headers: {
-              "X-RateLimit-Limit": MAX_REQUESTS_PER_DAY.toString(),
-              "X-RateLimit-Remaining": "0",
-              "X-RateLimit-Reset": rateLimit.resetTime.toString(),
-            },
-          },
-        )
-      }
-
-      console.log("[v0] API: Starting image generation request")
-      console.log("[v0] API: Remaining requests today:", rateLimit.remaining)
-    } else {
-      console.log("[v0] API: Rate limiting bypassed for /g route or dev mode")
-    }
+    console.log("[v0] API: Starting image generation request")
 
     const formData = await request.formData()
     const mode = formData.get("mode") as string
@@ -315,22 +231,11 @@ export async function POST(request: NextRequest) {
     console.log("[v0] API: Generated image URL:", imageUrl)
     console.log("[v0] API: AI Description:", description)
 
-    return NextResponse.json(
-      {
-        url: imageUrl,
-        prompt: prompt,
-        description: description,
-      },
-      {
-        headers: {
-          "X-RateLimit-Limit": MAX_REQUESTS_PER_DAY.toString(),
-          "X-RateLimit-Remaining": bypassRateLimit
-            ? MAX_REQUESTS_PER_DAY.toString()
-            : (await redis.get<number>(`ratelimit:${ip}:${new Date().toISOString().split("T")[0]}`))?.toString() || "0",
-          "X-RateLimit-Reset": bypassRateLimit ? "0" : new Date().setHours(23, 59, 59, 999).toString(),
-        },
-      },
-    )
+    return NextResponse.json({
+      url: imageUrl,
+      prompt: prompt,
+      description: description,
+    })
   } catch (error) {
     console.error("[v0] API: Error generating image:", error)
     console.error("[v0] API: Error type:", typeof error)

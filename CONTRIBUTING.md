@@ -89,7 +89,7 @@ export function ModelUpload({
 - [ ] Test with different image formats (JPG, PNG, HEIC)
 - [ ] Test with various file sizes (small to large)
 - [ ] Test responsive design (mobile, tablet, desktop)
-- [ ] Test error states (rate limits, API failures)
+- [ ] Test error states (API failures, network issues)
 - [ ] Test with multiple browser types
 
 ### Before Submitting PR

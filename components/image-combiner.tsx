@@ -670,24 +670,6 @@ export function ImageCombiner() {
             signal: controller.signal,
           })
 
-          if (response.status === 429) {
-            const errorData = await response.json()
-            clearInterval(progressInterval)
-
-            setGenerations((prev) =>
-              prev.map((gen) =>
-                gen.id === generationId
-                  ? { ...gen, status: "error" as const, error: "Rate limit exceeded", progress: 0 }
-                  : gen,
-              ),
-            )
-
-            const resetDate = new Date(errorData.resetTime)
-            const resetTime = resetDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-            showToast(`Rate limit reached. Try again after ${resetTime}`, "error")
-            return
-          }
-
           if (!response.ok) {
             const errorData = await response.json().catch(() => ({ error: "Unknown error" }))
             throw new Error(`${errorData.error}${errorData.details ? `: ${errorData.details}` : ""}`)

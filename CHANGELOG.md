@@ -60,7 +60,6 @@ Complete refactor from Nanobanana Starter to Virtual Try-On Catalog Generator.
 - Integration examples for Shopify/WooCommerce
 
 ### 🔒 Security
-- Maintained rate limiting with Upstash Redis
 - Environment variable validation
 - CORS protection on image proxy
 - Secure file handling

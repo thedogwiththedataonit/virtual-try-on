@@ -23,7 +23,6 @@ A powerful Next.js application that enables ecommerce companies to create AI-gen
 - **HEIC Support**: Automatic conversion of iPhone photos
 - **Image Compression**: Optimizes images for faster API processing
 - **Aspect Ratio Detection**: Auto-detects and suggests best aspect ratio
-- **Rate Limiting**: Built-in protection with Redis-based rate limiting
 - **Error Handling**: Graceful error states with retry logic
 
 ## 🚀 Quick Start
@@ -32,7 +31,6 @@ A powerful Next.js application that enables ecommerce companies to create AI-gen
 
 - Node.js 18+ and pnpm (or npm/yarn)
 - FAL AI API key ([Get one here](https://fal.ai/))
-- Upstash Redis account ([Sign up here](https://upstash.com/))
 
 ### Installation
 
@@ -57,8 +55,6 @@ A powerful Next.js application that enables ecommerce companies to create AI-gen
    Edit `.env.local` with your credentials:
    ```env
    FAL_KEY=your_fal_api_key_here
-   KV_REST_API_URL=your_upstash_redis_url_here
-   KV_REST_API_TOKEN=your_upstash_redis_token_here
    ```
 
 4. **Run the development server**
@@ -159,12 +155,6 @@ A powerful Next.js application that enables ecommerce companies to create AI-gen
 
 ### API Configuration
 
-#### Rate Limiting
-Adjust rate limits in `app/api/generate-image/route.ts`:
-```typescript
-const MAX_REQUESTS_PER_DAY = 2 // Change this number
-```
-
 #### Image Quality
 Adjust compression settings in `components/image-combiner.tsx`:
 ```typescript
@@ -194,7 +184,6 @@ const promptTemplates = {
 - **Styling**: Tailwind CSS v4
 - **Components**: Shadcn UI + Radix UI
 - **AI Service**: FAL AI (Nanobanana)
-- **Database**: Upstash Redis (Rate limiting)
 - **Image Processing**: Browser-native + heic-to converter
 
 ### Project Structure
@@ -258,8 +247,6 @@ Proxies FAL.media images to bypass CORS restrictions.
    - Import your repository
    - Add environment variables:
      - `FAL_KEY`
-     - `KV_REST_API_URL`
-     - `KV_REST_API_TOKEN`
    - Click "Deploy"
 
 3. **Configure custom domain** (optional)
@@ -298,18 +285,12 @@ railway up
 - Batch of 10: ~2-3 minutes (with delays)
 - Can be parallelized (remove delays for faster processing)
 
-### Rate Limits
-- Default: 2 generations per day per IP
-- Bypass for dev: Access via `/g` route
-- Upgrade Upstash Redis for higher limits
-
 ## 🔒 Security & Privacy
 
 ### Data Handling
 - Images are processed in-memory
 - No images stored on server
 - FAL AI stores images temporarily (30 days)
-- Rate limiting prevents abuse
 
 ### Environment Variables
 - Never commit `.env.local` to git
@@ -323,11 +304,6 @@ railway up
 ## 🐛 Troubleshooting
 
 ### Common Issues
-
-**"Rate limit exceeded"**
-- Wait until the reset time (shown in error)
-- Use `/g` route for development
-- Increase limit in API route
 
 **"Failed to generate image"**
 - Check API key is valid
@@ -350,7 +326,6 @@ railway up
 - [FAL AI Documentation](https://fal.ai/docs)
 - [Nanobanana Model](https://fal.ai/models/fal-ai/nano-banana)
 - [Next.js Documentation](https://nextjs.org/docs)
-- [Upstash Redis Docs](https://docs.upstash.com/)
 
 ## 🤝 Contributing
 

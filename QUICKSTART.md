@@ -4,14 +4,13 @@ Get your Virtual Try-On Catalog Generator running in **5 minutes**.
 
 ## 🎯 Prerequisites
 
-You need these three things:
+You need these two things:
 1. **FAL AI API Key** - [Get it here](https://fal.ai/) (Free tier available)
-2. **Upstash Redis** - [Sign up here](https://upstash.com/) (Free tier available)
-3. **Node.js 18+** - [Download](https://nodejs.org/)
+2. **Node.js 18+** - [Download](https://nodejs.org/)
 
-## 🚀 Setup (5 minutes)
+## 🚀 Setup (3 minutes)
 
-### Step 1: Get your credentials (2 min)
+### Step 1: Get your credentials (1 min)
 
 **FAL AI**:
 1. Go to https://fal.ai/
@@ -19,13 +18,6 @@ You need these three things:
 3. Go to Dashboard → API Keys
 4. Click "Create API Key"
 5. Copy the key (starts with `fal_...`)
-
-**Upstash Redis**:
-1. Go to https://console.upstash.com/
-2. Sign up (free, no credit card needed)
-3. Click "Create Database"
-4. Select any region (closer = faster)
-5. Copy the `REST API URL` and `REST API TOKEN`
 
 ### Step 2: Clone & install (1 min)
 
@@ -52,8 +44,6 @@ nano .env.local
 Paste your credentials:
 ```env
 FAL_KEY=fal_xxxxxxxxxxxxxxxxxxxxx
-KV_REST_API_URL=https://your-db.upstash.io
-KV_REST_API_TOKEN=your_token_here
 ```
 
 Save and close.
@@ -137,11 +127,6 @@ Try these:
 
 ## 🚨 Common Issues
 
-**"Rate limit exceeded"**
-- You hit the 2/day limit
-- Use the `/g` route for dev: http://localhost:3000/g
-- Or wait until reset time
-
 **"Failed to generate"**
 - Image too large? Try < 5MB
 - Check your API key is correct
@@ -174,7 +159,7 @@ npm i -g vercel
 vercel
 
 # Add environment variables in Vercel dashboard
-# (same three variables from .env.local)
+# (FAL_KEY from .env.local)
 ```
 
 Visit your new URL!
@@ -188,7 +173,6 @@ Visit your new URL!
 
 **Development (Free tier is enough)**:
 - FAL AI: ~$0.01 per image
-- Upstash: 10,000 commands/day free
 - Total: $0-5/month for testing
 
 **Production (Small ecommerce)**:
@@ -198,7 +182,6 @@ Visit your new URL!
 
 **Enterprise**:
 - Contact FAL AI for volume discounts
-- Upgrade Upstash for higher rate limits
 
 ## 🆘 Need Help?
 
@@ -230,8 +213,4 @@ You now have a working Virtual Try-On Catalog Generator!
 4. Scale up to full product catalog
 
 **Happy generating!** 🚀
-
----
-
-💡 **Pro tip**: Bookmark http://localhost:3000/g for unlimited dev testing
 
